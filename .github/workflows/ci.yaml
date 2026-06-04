@@ -1,0 +1,33 @@
+name: Day3 Pipeline
+
+on:
+  push:
+
+jobs:
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          pip install -r day3-pipeline/requirements.txt
+          pip install pytest flake8
+
+      - name: Run pytest
+        env:
+          PYTHONPATH: day3-pipeline
+        run: pytest day3-pipeline/test/test_pipeline.py
+
+
+      - name: Execute Pipeline
+        run: |
+          python day3-pipeline/main.py
